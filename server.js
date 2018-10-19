@@ -1,7 +1,19 @@
 var express = require('express');
-var path = require('path');
 
-var PORT = process.env.PORT || 3000;
+var apiRoutes = require('./app/routing/apiRoutes.js')
+var htmlRoutes = require('./app/routing/htmlRoutes.js')
 
-app.use(exress.urlencoded({extended: true}));
+var PORT = process.env.PORT || 8000;
+
+var app = express();
+
+app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+
+// CALLING IMPORTED HTML ROUTES
+apiRoutes(app);
+htmlRoutes(app);
+
+app.listen(PORT, function() {
+    console.log("App listening on port: " + PORT);
+})

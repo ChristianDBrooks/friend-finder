@@ -1,7 +1,17 @@
-app.get("/survey", function(req, res) {
-    res.sendFile(path.join(__dirname, "survery.html"));
-})
+var path = require('path');
 
-app.get("/:anything", function(req, res) {
-    res.sendFile(path.join(__dirname, "home.html"));
-})
+function htmlRoutes(app) {
+    app.get("/", function(req, res) {
+        res.sendFile(path.join(__dirname, "../public/home.html"));
+    })
+    
+    app.get("/survey", function(req, res) {
+        res.sendFile(path.join(__dirname, "../public/survey.html"));
+    })
+    
+    app.get("*", function(req, res) {
+        res.sendFile(path.join(__dirname, "../public/home.html"));
+    })
+}
+
+module.exports = htmlRoutes;
