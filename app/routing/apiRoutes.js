@@ -8,37 +8,24 @@ function apiRoutes(app) {
     
     app.post("/api/friends", function(req, res) {
         var newFriend = req.body;
-
-        // FOR EACH FRIEND IN THE OBJECT
+        var sum = 0;
+        for (let i = 0; i < newFriend.scores.length; i ++) {
+            sum += parseInt(newFriend.scores[i]);
+        }
+        newFriend.total = sum;
         var closestMatch;
-        for (i = 0; i < friends.length; i++) {
-            var friendDifference = 0;
-            console.log("Console log difference: " + friendDifference);
-            // FOR EACH SCORE IN SCORES ARRAY
-            for (j = 0; j < friends[i].scores.length; j++) {
-                var result = friends[i].scores[j] - newFriend.scores[j]
-                friendDifference += (Math.abs(result));
-                console.log("Console log result: " + result);
-            }
-            if (closestMatch === undefined) {
-                console.log("Creating closestMatch");
-                closestMatch = {
-                    friendName: friends[i].name, 
-                    difference: friendDifference
-                    }
-                console.log('New match is: ' + closestMatch);
-            } else if (friendDifference < closestMatch.difference) {
-                console.log("Updating closestMatch");
-                closestMatch = {
-                    friendName: friends[i].name, 
-                    difference: friendDifference
-                }
-                console.log('Updated match is: ' + JSON.stringify(closestMatch));
+        var difference = null;
+        for (let i = 0; i < friends.length; i++) {
+            var result = newFriend.total - friends[i].total;
+            if (result < difference || difference === null) {
+                difference = result;
+                closestMatch = friends[i].name;
             }
         }
-
+        
         friends.push(newFriend);
-        res.send('Your closest match is ' + closestMatch.friendName);
+        res.send('Your closest match is ' + closestMatch);
+        console.log('Your closest match is ' + closestMatch);
     })
 }
 
